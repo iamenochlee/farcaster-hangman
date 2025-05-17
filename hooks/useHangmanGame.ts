@@ -3,6 +3,7 @@ import { parseEther } from "viem";
 import { useSendTransaction } from "wagmi";
 
 interface GameState {
+  timeLimit: unknown;
   wordLength: number;
   maskedWord: string;
   remainingGuesses: number;
@@ -25,7 +26,6 @@ export const categories = {
   social: "Social Platforms",
   colours: "Colors",
 } as const;
-
 export function useHangmanGame() {
   const [gameState, setGameState] = useState<GameState>({
     wordLength: 0,
@@ -35,6 +35,7 @@ export function useHangmanGame() {
     guessedLetters: new Set(),
     gameStatus: "idle",
     category: null,
+    timeLimit: null, // Added missing timeLimit property
   });
 
   const { sendTransaction } = useSendTransaction({
@@ -48,10 +49,16 @@ export function useHangmanGame() {
     },
   });
 
-  const startNewGame = async (category: keyof typeof categories) => {
+  const startNewGame = async (
+    category: keyof typeof categories,
+    mode: "timed" | "default" = "default",
+    timeLimit: number = 120
+  ) => {
     try {
       const response = await fetch(
-        `/api/game/word?category=${category === "shuffle" ? "" : category}`
+        `/api/game/word?category=${
+          category === "shuffle" ? "" : category
+        }&mode=${mode}${mode === "timed" ? `&timeLimit=${timeLimit}` : ""}`
       );
       const data = await response.json();
 

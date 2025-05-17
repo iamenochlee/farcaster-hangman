@@ -16,7 +16,13 @@ contract HangmanGame {
         uint256 startTime;
     }
 
+    struct Stats {
+        uint256 wordsGuessed;
+        uint256 gamesPlayed;
+    }
+
     mapping(string => Game) public games;
+    mapping(address => Stats) public userStats;
     uint256 public minStake = 0.01 ether;
     uint256 public maxGameDuration = 1 hours;
 
@@ -39,6 +45,7 @@ contract HangmanGame {
             startTime: block.timestamp
         });
 
+        userStats[msg.sender].gamesPlayed += 1;
         emit GameStarted(gameId, msg.sender, msg.value);
     }
 
@@ -61,6 +68,10 @@ contract HangmanGame {
 
         game.isCompleted = true;
         payable(game.player).transfer(game.stake);
+
+        // Update stats
+        userStats[msg.sender].wordsGuessed += 1; // Only if won
+
         emit GameCompleted(gameId, game.player, true);
     }
 
@@ -108,6 +119,13 @@ contract HangmanGame {
     {
         Game memory game = games[gameId];
         return (game.player, game.stake, game.isCompleted, game.startTime);
+    }
+
+    function getUserStats(
+        address user
+    ) external view returns (uint256, uint256) {
+        Stats memory stats = userStats[user];
+        return (stats.wordsGuessed, stats.gamesPlayed);
     }
 
     fallback() external payable {

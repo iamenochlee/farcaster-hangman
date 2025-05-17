@@ -4,20 +4,29 @@ import { SafeAreaContainer } from "@/utils/safe-area-container";
 import { useMiniAppContext } from "@/hooks/use-miniapp-context";
 import { HangmanGame } from "./Game/HangmanGame";
 import { User } from "./User";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
+import { useState } from "react";
+import TimedHangmanGame from "./Game/TimedHangmanGame";
+import Pregame from "./Game/Pregame";
 
 export default function Home() {
   const { context } = useMiniAppContext();
   const { isConnected, address, chainId } = useAccount();
   const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
+  const [mode, setMode] = useState<"none" | "timed" | "default">("none");
 
   return (
     <SafeAreaContainer insets={context?.client.safeAreaInsets}>
       <div>
         <User />
         {isConnected ? (
-          <HangmanGame />
+          mode === "none" ? (
+            <Pregame setMode={setMode} />
+          ) : mode === "timed" ? (
+            <TimedHangmanGame setMode={setMode} />
+          ) : (
+            <HangmanGame setMode={setMode} />
+          )
         ) : (
           <button
             type="button"
@@ -26,7 +35,6 @@ export default function Home() {
             Connect Wallet
           </button>
         )}
-        <button onClick={() => disconnect()}>Disconnect</button>
       </div>
     </SafeAreaContainer>
   );
