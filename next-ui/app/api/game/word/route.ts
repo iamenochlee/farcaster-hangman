@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import wordLists from "@/data/wordLists.json";
 import { randomBytes } from "crypto";
-import { keccak256, concat } from "ethers";
+import { keccak256 } from "ethers";
 
 // Store active games in memory (in production, use a proper database)
 const activeGames = new Map<
@@ -31,6 +31,8 @@ export async function GET(request: Request) {
     selectedCategory =
       allCategories[Math.floor(Math.random() * allCategories.length)];
   }
+
+  console.log(selectedCategory, mode, timeLimit);
 
   // Start new game
   let availableWords =
