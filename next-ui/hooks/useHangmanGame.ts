@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { parseEther } from "viem";
-import { useSendTransaction } from "wagmi";
+import { useWriteContract } from "wagmi";
 import { categories, GameState } from "@/types";
+
+import {
+  HANGMAN_CONTRACT_ADDRESS,
+  MIN_STAKE,
+  HANGMAN_CONTRACT_ABI,
+} from "@/contracts/config";
 
 export function useHangmanGame() {
   const [gameState, setGameState] = useState<GameState>({
@@ -15,7 +20,7 @@ export function useHangmanGame() {
     timeLimit: null,
   });
 
-  const { sendTransaction } = useSendTransaction({
+  const { writeContract } = useWriteContract({
     mutation: {
       onSuccess: () => {
         setGameState((prev) => ({
@@ -53,11 +58,13 @@ export function useHangmanGame() {
         category: data.category,
       });
 
-      // Send transaction
-      // sendTransaction({
-      //   to: "0x39043f5b5ee9df333d0bf544b67c27d8284f69a1",
-      //   value: parseEther("0.01"),
-      // });
+      writeContract({
+        address: HANGMAN_CONTRACT_ADDRESS,
+        abi: HANGMAN_CONTRACT_ABI,
+        functionName: "startGame",
+        args: [data.gameId, data.commitment],
+        value: MIN_STAKE,
+      });
     } catch (error) {
       console.error("Failed to start game:", error);
     }
@@ -105,6 +112,31 @@ export function useHangmanGame() {
       console.error("Failed to make guess:", error);
     }
   };
+
+  // const completeGame = async () => {
+  //   if (
+  //     !gameState.gameId ||
+  //     !gameState.word ||
+  //     !gameState.nonce ||
+  //     gameState.gameStatus !== "won"
+  //   ) {
+  //     return;
+  //   }
+
+  //   try {
+  //     const { writeContract } = await import("@wagmi/core");
+  //     const { parseEther } = await import("viem");
+
+  //     await writeContract({
+  //       address: HANGMAN_CONTRACT_ADDRESS,
+  //       abi: HANGMAN_CONTRACT_ABI,
+  //       functionName: "",
+  //       args: [gameState.gameId, gameState.word, gameState.nonce],
+  //     });
+  //   } catch (error) {
+  //     console.error("Failed to complete game:", error);
+  //   }
+  // };
 
   return {
     gameState,

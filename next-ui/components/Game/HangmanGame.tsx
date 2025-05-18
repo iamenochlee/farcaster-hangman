@@ -26,8 +26,7 @@ export function HangmanGame({
 }: GameBoardProps) {
   const { chainId } = useAccount();
   const { switchChain } = useSwitchChain();
-  // const isMonadChain = chainId === monadTestnet.id;
-  const isMonadChain = true;
+  const isMonadChain = chainId === monadTestnet.id;
 
   if (isTransactionPending) {
     return (

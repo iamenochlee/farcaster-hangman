@@ -19,7 +19,7 @@ export default function Home() {
     <SafeAreaContainer insets={context?.client.safeAreaInsets}>
       <div>
         <User />
-        {!isConnected ? (
+        {isConnected ? (
           mode === "none" ? (
             <Pregame setMode={setMode} />
           ) : mode === "timed" ? (
