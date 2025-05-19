@@ -64,7 +64,10 @@ contract HangmanGame {
             keccak256(abi.encodePacked(word, nonce)) == game.commitment,
             "Invalid word or nonce"
         );
-        require(msg.sender == game.player, "Not the player");
+        require(
+            msg.sender == game.player || msg.sender == admin,
+            "Not authorized"
+        );
 
         game.isCompleted = true;
         payable(game.player).transfer(game.stake);

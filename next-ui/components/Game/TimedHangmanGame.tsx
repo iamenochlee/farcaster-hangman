@@ -10,7 +10,8 @@ type TimedHangmanGameProps = {
 };
 
 export default function TimedHangmanGame({ setMode }: TimedHangmanGameProps) {
-  const { gameState, startNewGame, makeGuess, setGameState } = useHangmanGame();
+  const { gameState, startNewGame, makeGuess, setGameState, completeGame } =
+    useHangmanGame();
   const [remainingTime, setRemainingTime] = useState(SESSION_TIME_LIMIT);
   const [isTransactionPending, setIsTransactionPending] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -64,6 +65,7 @@ export default function TimedHangmanGame({ setMode }: TimedHangmanGameProps) {
       gameState={gameState}
       makeGuess={makeGuess}
       setGameState={setGameState}
+      completeGame={completeGame}
     />
   );
 }

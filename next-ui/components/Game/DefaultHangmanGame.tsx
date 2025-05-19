@@ -9,7 +9,8 @@ type HangmanGameProps = {
 };
 
 export function DefaultHangmanGame({ setMode }: HangmanGameProps) {
-  const { gameState, startNewGame, makeGuess, setGameState } = useHangmanGame();
+  const { gameState, startNewGame, makeGuess, setGameState, completeGame } =
+    useHangmanGame();
   const [isTransactionPending, setIsTransactionPending] = useState(false);
 
   const onStart = async (category: keyof typeof categories) => {
@@ -30,6 +31,7 @@ export function DefaultHangmanGame({ setMode }: HangmanGameProps) {
       gameState={gameState}
       makeGuess={makeGuess}
       setGameState={setGameState}
+      completeGame={completeGame}
     />
   );
 }

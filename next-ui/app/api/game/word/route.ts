@@ -44,8 +44,9 @@ export async function GET(request: Request) {
     ].toUpperCase();
   const newGameId = Date.now().toString();
 
-  // Generate a random nonce for this game
-  const nonce = randomBytes(32).toString("hex");
+  // Generate a random nonce for this game (32 bytes)
+  const nonceBytes = randomBytes(32);
+  const nonce = `0x${nonceBytes.toString("hex")}`;
 
   // Store game state
   activeGames.set(newGameId, {
@@ -58,7 +59,10 @@ export async function GET(request: Request) {
     timeLimit,
   });
 
-  const commitment = keccak256(new TextEncoder().encode(randomWord + nonce));
+  // Generate commitment using raw bytes of nonce
+  const commitment = keccak256(
+    Buffer.concat([Buffer.from(randomWord), nonceBytes])
+  );
 
   console.log(randomWord, commitment, "\nnonce:", nonce);
 

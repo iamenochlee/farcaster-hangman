@@ -12,6 +12,7 @@ type GameBoardProps = {
   gameState: GameState;
   makeGuess: (letter: string) => Promise<void>;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
+  completeGame: (gameId: string, word: string, nonce: string) => Promise<void>;
 };
 
 export function HangmanGame({
@@ -23,6 +24,7 @@ export function HangmanGame({
   gameState,
   makeGuess,
   setGameState,
+  completeGame,
 }: GameBoardProps) {
   const { chainId } = useAccount();
   const { switchChain } = useSwitchChain();
@@ -147,6 +149,14 @@ export function HangmanGame({
             Congratulations! You won!
           </div>
           <div className="text-lg mb-4">The word was: {gameState.word}</div>
+          <button
+            onClick={() =>
+              completeGame(gameState.gameId, gameState.word!, gameState.nonce!)
+            }
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mb-4"
+          >
+            Claim Reward
+          </button>
           <button
             onClick={() => setMode("none")}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

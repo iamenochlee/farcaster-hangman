@@ -113,35 +113,38 @@ export function useHangmanGame() {
     }
   };
 
-  // const completeGame = async () => {
-  //   if (
-  //     !gameState.gameId ||
-  //     !gameState.word ||
-  //     !gameState.nonce ||
-  //     gameState.gameStatus !== "won"
-  //   ) {
-  //     return;
-  //   }
+  const completeGame = async (gameId: string, word: string, nonce: string) => {
+    try {
+      const response = await fetch("/api/game/complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gameId, word, nonce }),
+      });
 
-  //   try {
-  //     const { writeContract } = await import("@wagmi/core");
-  //     const { parseEther } = await import("viem");
+      if (!response.ok) {
+        throw new Error("Failed to complete game");
+      }
 
-  //     await writeContract({
-  //       address: HANGMAN_CONTRACT_ADDRESS,
-  //       abi: HANGMAN_CONTRACT_ABI,
-  //       functionName: "",
-  //       args: [gameState.gameId, gameState.word, gameState.nonce],
-  //     });
-  //   } catch (error) {
-  //     console.error("Failed to complete game:", error);
-  //   }
-  // };
+      const data = await response.json();
+      setGameState((prev) => ({
+        ...prev,
+        gameStatus: "won",
+      }));
+
+      return data.hash;
+    } catch (error) {
+      console.error("Error completing game:", error);
+      throw error;
+    }
+  };
 
   return {
     gameState,
     startNewGame,
     makeGuess,
     setGameState,
+    completeGame,
   };
 }
