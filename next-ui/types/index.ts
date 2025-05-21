@@ -16,16 +16,16 @@ export const categories = {
 } as const;
 
 export interface GameState {
-  timeLimit: unknown;
   wordLength: number;
   maskedWord: string;
   remainingGuesses: number;
   gameId: string;
   guessedLetters: Set<string>;
-  gameStatus: "idle" | "playing" | "won" | "lost";
+  gameStatus: "idle" | "playing" | "won" | "lost" | "success";
   category: string | null;
   word?: string;
   nonce?: string;
   commitment?: string;
   startTime?: number;
+  transactionHash?: string;
 }

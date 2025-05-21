@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useWriteContract } from "wagmi";
 import { categories, GameState } from "@/types";
+import {
+  playCorrectGuess,
+  playIncorrectGuess,
+} from "@/components/Game/AudioControl";
 
 import {
   HANGMAN_CONTRACT_ADDRESS,
@@ -17,7 +21,6 @@ export function useHangmanGame() {
     guessedLetters: new Set(),
     gameStatus: "idle",
     category: null,
-    timeLimit: null,
   });
 
   const { writeContract } = useWriteContract({
@@ -31,18 +34,11 @@ export function useHangmanGame() {
     },
   });
 
-  const startNewGame = async (
-    category: keyof typeof categories,
-    mode?: "timed"
-  ) => {
+  const startNewGame = async (category: keyof typeof categories) => {
     try {
       const params = new URLSearchParams();
       if (category !== "shuffle") {
         params.append("category", category);
-      }
-      if (mode === "timed") {
-        params.append("mode", "timed");
-        params.append("timeLimit", "120");
       }
 
       const url = `/api/game/word${
@@ -54,7 +50,7 @@ export function useHangmanGame() {
       setGameState({
         ...data,
         guessedLetters: new Set(),
-        gameStatus: "playing",
+        gameStatus: "idle",
         category: data.category,
       });
 
@@ -92,6 +88,13 @@ export function useHangmanGame() {
       const data = await response.json();
 
       if (response.ok) {
+        // Play appropriate sound based on the guess result
+        if (data.isCorrectGuess) {
+          playCorrectGuess();
+        } else {
+          playIncorrectGuess();
+        }
+
         setGameState((prev) => ({
           ...prev,
           maskedWord: data.maskedWord,
@@ -130,7 +133,8 @@ export function useHangmanGame() {
       const data = await response.json();
       setGameState((prev) => ({
         ...prev,
-        gameStatus: "won",
+        gameStatus: "success",
+        transactionHash: data.hash,
       }));
 
       return data.hash;

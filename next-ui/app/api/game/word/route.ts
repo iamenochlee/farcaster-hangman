@@ -12,17 +12,12 @@ const activeGames = new Map<
     remainingGuesses: number;
     startTime: number;
     nonce: string;
-    mode: "timed" | "default";
-    timeLimit: number;
   }
 >();
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category") || "shuffle";
-  const mode = searchParams.get("mode") || "default";
-  const timeLimit =
-    mode === "timed" ? parseInt(searchParams.get("timeLimit") || "120", 10) : 0; // Get timeLimit from request, default to 120 seconds for timed mode
 
   // For shuffle category, randomly select from all categories including random
   let selectedCategory = category;
@@ -31,8 +26,6 @@ export async function GET(request: Request) {
     selectedCategory =
       allCategories[Math.floor(Math.random() * allCategories.length)];
   }
-
-  console.log(selectedCategory, mode, timeLimit);
 
   // Start new game
   let availableWords =
@@ -52,11 +45,9 @@ export async function GET(request: Request) {
   activeGames.set(newGameId, {
     word: randomWord,
     guessedLetters: new Set(),
-    remainingGuesses: mode === "timed" ? Infinity : 6,
+    remainingGuesses: 6,
     startTime: Date.now(),
     nonce,
-    mode: mode as "timed" | "default",
-    timeLimit,
   });
 
   // Generate commitment using raw bytes of nonce
@@ -69,12 +60,12 @@ export async function GET(request: Request) {
   return NextResponse.json({
     wordLength: randomWord.length,
     maskedWord: "_".repeat(randomWord.length),
-    remainingGuesses: mode === "timed" ? Infinity : 6,
+    remainingGuesses: 6,
     gameId: newGameId,
     category: selectedCategory,
     commitment,
-    mode,
-    timeLimit,
+    mode: "default",
+    timeLimit: 0,
     startTime: Date.now(),
   });
 }
@@ -92,25 +83,8 @@ export async function POST(request: Request) {
 
     const game = activeGames.get(gameId)!;
 
-    // Check if game has expired (for timed mode)
-    if (game.mode === "timed" && game.timeLimit > 0) {
-      const elapsedTime = (Date.now() - game.startTime) / 1000;
-      if (elapsedTime > game.timeLimit) {
-        return NextResponse.json({
-          maskedWord: game.word,
-          remainingGuesses: 0,
-          isCorrectGuess: false,
-          isWon: false,
-          isGameOver: true,
-          guessedLetters: Array.from(game.guessedLetters),
-          word: game.word,
-          timeExpired: true,
-        });
-      }
-    }
-
-    // Only check remainingGuesses in default mode
-    if (game.mode === "default" && game.remainingGuesses <= 0) {
+    // Only check remainingGuesses
+    if (game.remainingGuesses <= 0) {
       return NextResponse.json({ error: "Game already over" }, { status: 400 });
     }
 
@@ -119,7 +93,7 @@ export async function POST(request: Request) {
     const isCorrectGuess = game.word.includes(upperLetter);
     if (!game.guessedLetters.has(upperLetter)) {
       game.guessedLetters.add(upperLetter);
-      if (!isCorrectGuess && game.mode === "default") {
+      if (!isCorrectGuess) {
         game.remainingGuesses--;
       }
     }
@@ -137,8 +111,7 @@ export async function POST(request: Request) {
       .join("");
 
     // Only consider remainingGuesses for game over in default mode
-    const isGameOver =
-      (game.mode === "default" && game.remainingGuesses <= 0) || isWon;
+    const isGameOver = game.remainingGuesses <= 0 || isWon;
 
     return NextResponse.json({
       maskedWord,
@@ -149,7 +122,6 @@ export async function POST(request: Request) {
       guessedLetters: Array.from(game.guessedLetters),
       word: isGameOver ? game.word : undefined,
       nonce: isWon ? game.nonce : undefined,
-      elapsedTime: (Date.now() - game.startTime) / 1000,
     });
   } catch (error) {
     return NextResponse.json(

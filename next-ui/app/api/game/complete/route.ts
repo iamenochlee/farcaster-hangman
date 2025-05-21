@@ -20,9 +20,6 @@ export async function POST(request: Request) {
   try {
     const { gameId, word, nonce } = await request.json();
 
-    console.log(gameId, word, nonce);
-
-    // The nonce should already be in the correct format (0x-prefixed hex string)
     const nonceBytes = nonce as `0x${string}`;
 
     // Call the completeGame function using the admin wallet

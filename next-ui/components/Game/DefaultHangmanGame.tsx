@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
 import { useHangmanGame } from "@/hooks/useHangmanGame";
-import { HangmanGame } from "./HangmanGame";
+import HangmanGame from "./HangmanGame";
 import { categories } from "@/types";
 
 type HangmanGameProps = {
-  setMode: React.Dispatch<React.SetStateAction<"none" | "timed" | "default">>;
+  setMode: React.Dispatch<React.SetStateAction<"none" | "default">>;
 };
 
-export function DefaultHangmanGame({ setMode }: HangmanGameProps) {
+export default function DefaultHangmanGame({ setMode }: HangmanGameProps) {
   const { gameState, startNewGame, makeGuess, setGameState, completeGame } =
     useHangmanGame();
   const [isTransactionPending, setIsTransactionPending] = useState(false);
