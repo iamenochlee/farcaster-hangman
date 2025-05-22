@@ -4,8 +4,8 @@ import { useMiniAppContext } from "@/hooks/use-miniapp-context";
 import { useHangmanStats } from "@/hooks/useHangmanStats";
 import { useEffect } from "react";
 import { monadTestnet } from "viem/chains";
-import { useAccount } from "wagmi";
-import { useSwitchChain } from "wagmi";
+import { useAccount, useSwitchChain } from "wagmi";
+import Image from "next/image";
 
 export function User() {
   const { context } = useMiniAppContext();
@@ -26,7 +26,7 @@ export function User() {
     <div className="flex flex-col items-center w-full max-w-md mx-auto py-4">
       <div className="flex flex-row items-center space-x-4 border border-[#836EF9] rounded-md p-4 bg-white">
         {context?.user?.pfpUrl && (
-          <img
+          <Image
             src={context?.user?.pfpUrl}
             className="w-14 h-14 rounded-full"
             alt="User Profile Picture"

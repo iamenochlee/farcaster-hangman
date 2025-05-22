@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AudioControl } from "./AudioControl";
 import { useMiniAppContext } from "@/hooks/use-miniapp-context";
 import { User } from "../User";
+import Image from "next/image";
 
 export default function GameLayout({
   children,
@@ -58,8 +59,8 @@ export default function GameLayout({
             onClick={() => setShowProfile(true)}
             disabled={showProfile}
           >
-            <img
-              src={context?.user?.pfpUrl}
+            <Image
+              src={context?.user?.pfpUrl!}
               className="w-6 h-6 rounded-full"
               alt="User Profile Picture"
               width={12}
