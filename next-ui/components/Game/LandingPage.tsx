@@ -2,7 +2,7 @@ import React from "react";
 
 export default function LandingPage() {
   const openInWarpcast = () => {
-    const appUrl = "https://vervet-pleasant-dinosaur.ngrok-free.app";
+    const appUrl = "https://farcaster-hangman.vercel.app";
     const currentPath = window.location.pathname;
     const fullUrl = `${appUrl}${currentPath}`;
     window.location.href = `https://warpcast.com/?launchFrameUrl=${encodeURIComponent(
