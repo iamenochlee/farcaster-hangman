@@ -2,12 +2,7 @@ import React from "react";
 
 export default function LandingPage() {
   const openInWarpcast = () => {
-    const appUrl = "https://farcaster-hangman.vercel.app";
-    const currentPath = window.location.pathname;
-    const fullUrl = `${appUrl}${currentPath}`;
-    window.location.href = `https://warpcast.com/?launchFrameUrl=${encodeURIComponent(
-      fullUrl
-    )}`;
+    window.location.href = `https://warpcast.com/miniapps/MPqv6snxjuAx/hangman-game`;
   };
 
   return (
