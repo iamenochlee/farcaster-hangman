@@ -4,6 +4,14 @@ import { useState, useEffect, useRef } from "react";
 // Module-level variable to track mute state for sound effects
 let globalIsMuted = false;
 
+// Module-level preloaded audio elements
+const correctAudio =
+  typeof window !== "undefined" ? new Audio("/audio/correct.mp3") : null;
+const incorrectAudio =
+  typeof window !== "undefined" ? new Audio("/audio/incorrect.mp3") : null;
+const victoryAudio =
+  typeof window !== "undefined" ? new Audio("/audio/victory.mp3") : null;
+
 export function AudioControl() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -55,12 +63,16 @@ export function AudioControl() {
     };
   }, []);
 
-  // Sync audio volume with isMuted
+  // Sync audio volume and mute state with isMuted (mobile-friendly)
   useEffect(() => {
     globalIsMuted = isMuted;
     if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : 0.1;
-      if (!isMuted) {
+      audioRef.current.muted = isMuted;
+      if (isMuted) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0; // Optional: reset to start
+      } else {
+        audioRef.current.volume = 0.1;
         audioRef.current.play().catch(() => {});
       }
     }
@@ -120,22 +132,22 @@ export function AudioControl() {
 export const isAudioMuted = () => globalIsMuted;
 
 export const playCorrectGuess = () => {
-  if (globalIsMuted) return;
-  const audio = new Audio("/audio/correct.mp3");
-  audio.volume = 0.2;
-  audio.play().catch(console.error);
+  if (globalIsMuted || !correctAudio) return;
+  correctAudio.currentTime = 0;
+  correctAudio.volume = 0.2;
+  correctAudio.play().catch(console.error);
 };
 
 export const playIncorrectGuess = () => {
-  if (globalIsMuted) return;
-  const audio = new Audio("/audio/incorrect.mp3");
-  audio.volume = 0.2;
-  audio.play().catch(console.error);
+  if (globalIsMuted || !incorrectAudio) return;
+  incorrectAudio.currentTime = 0;
+  incorrectAudio.volume = 0.2;
+  incorrectAudio.play().catch(console.error);
 };
 
 export const playVictorySound = () => {
-  if (globalIsMuted) return;
-  const audio = new Audio("/audio/victory.mp3");
-  audio.volume = 0.2;
-  audio.play().catch(console.error);
+  if (globalIsMuted || !victoryAudio) return;
+  victoryAudio.currentTime = 0;
+  victoryAudio.volume = 0.2;
+  victoryAudio.play().catch(console.error);
 };

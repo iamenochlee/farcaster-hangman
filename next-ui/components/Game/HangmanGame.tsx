@@ -300,7 +300,10 @@ export default function HangmanGame({
             const word = gameState.word || "";
 
             sdk.actions.composeCast({
-              text: `I just guessed "${word}" in Hangman on Monad! 🎉 Play now`,
+              text:
+                gameState.gameStatus === "lost"
+                  ? `I couldn't guess "${word}" in Hangman on Monad. Can you do better?`
+                  : `I just guessed "${word}" in Hangman on Monad! 🎉 Play now`,
               embeds: [window.location.href],
             });
           }}
