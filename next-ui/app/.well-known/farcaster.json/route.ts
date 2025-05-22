@@ -3,7 +3,14 @@ import { APP_URL } from "../../../lib/constants";
 
 export async function GET() {
   const farcasterConfig = {
-    // TODO: Add account association
+    accountAssociation: {
+      header:
+        "eyJmaWQiOjQ0NTA5NSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweEZDQ2I5MTBENTM0OGZCZDU5MkU4NjM2RDk5OTI2QWNFRUVhRmU1ZDEifQ",
+      payload: "eyJkb21haW4iOiJmYXJjYXN0ZXItaGFuZ21hbi52ZXJjZWwuYXBwIn0",
+      signature:
+        "MHhmZjdlMzVkZWJhZjQwYWE1YTU2M2ZmYzVhOTVmNWJjOWYxMWNhYjcwYmQyNTBhOGNkNzA3MDhlMGMwNDZjMDM1NjRjMTQwN2M3YTZmMzk2MjA5YmM1YzY4ZTdkZjk4NTEzY2Y2MGYyMjc3YzBlMzM2Yzg3NTlhZjMyNzFmNmRmMDFi",
+    },
+
     frame: {
       version: "1",
       name: "Hangman Game",
