@@ -1,6 +1,9 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
+// Module-level variable to track mute state for sound effects
+let globalIsMuted = false;
+
 export function AudioControl() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -52,17 +55,18 @@ export function AudioControl() {
     };
   }, []);
 
-  const toggleMute = () => {
+  // Sync audio volume with isMuted
+  useEffect(() => {
+    globalIsMuted = isMuted;
     if (audioRef.current) {
-      if (isMuted) {
-        audioRef.current.volume = 0.1;
-        audioRef.current.play();
-      } else {
-        audioRef.current.volume = 0;
+      audioRef.current.volume = isMuted ? 0 : 0.1;
+      if (!isMuted) {
+        audioRef.current.play().catch(() => {});
       }
-      setIsMuted(!isMuted);
     }
-  };
+  }, [isMuted]);
+
+  const toggleMute = () => setIsMuted((m) => !m);
 
   return (
     <button
@@ -113,19 +117,24 @@ export function AudioControl() {
 }
 
 // Export the sound functions for use in other components
+export const isAudioMuted = () => globalIsMuted;
+
 export const playCorrectGuess = () => {
+  if (globalIsMuted) return;
   const audio = new Audio("/audio/correct.mp3");
   audio.volume = 0.2;
   audio.play().catch(console.error);
 };
 
 export const playIncorrectGuess = () => {
+  if (globalIsMuted) return;
   const audio = new Audio("/audio/incorrect.mp3");
   audio.volume = 0.2;
   audio.play().catch(console.error);
 };
 
 export const playVictorySound = () => {
+  if (globalIsMuted) return;
   const audio = new Audio("/audio/victory.mp3");
   audio.volume = 0.2;
   audio.play().catch(console.error);

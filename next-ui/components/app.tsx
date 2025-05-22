@@ -27,6 +27,7 @@ export default function App() {
           ) : (
             <button
               type="button"
+              className="text-white bg-black rounded-full px-4 py-2"
               onClick={() => connect({ connector: connectors[0] })}
             >
               Connect Wallet

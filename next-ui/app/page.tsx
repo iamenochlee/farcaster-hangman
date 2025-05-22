@@ -15,7 +15,6 @@ const frame = {
       name: "Hangman Game",
       url: APP_URL,
       splashImageUrl: `${APP_URL}/images/splash.png`,
-      splashBackgroundColor: "#00ff00",
     },
   },
 };

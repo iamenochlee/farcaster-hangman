@@ -22,7 +22,6 @@ export async function GET() {
       tags: ["monad", "farcaster", "miniapp", "game", "hangman"],
       primaryCategory: "games",
       splashImageUrl: `${APP_URL}/images/splash.png`,
-      splashBackgroundColor: "#00ff00",
     },
   };
 
