@@ -1,11 +1,17 @@
 import sdk from "@farcaster/frame-sdk";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Pregame({
   setMode,
 }: {
   setMode: (mode: "default") => void;
 }) {
+  useEffect(() => {
+    if (sdk?.actions?.addFrame) {
+      sdk.actions.addFrame();
+    }
+  }, []);
+
   return (
     <div className="flex flex-col items-center w-full max-w-md mx-auto py-8 gap-6 bg-white min-h-[calc(100vh-120px)]">
       {/* Hangman SVG Illustration */}
