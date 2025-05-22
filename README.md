@@ -1,4 +1,4 @@
-# Farcaster Hangman (In Development)
+# Farcaster Hangman
 
 A fun Hangman game built as a Farcaster Mini App. Players can guess words and share their progress with the Farcaster community.
 
@@ -22,7 +22,7 @@ The project is built with:
 
 - `/app` - Next.js app directory containing pages and layouts
 - `/components` - React components
-- `/public` - Static assets
+- `/public` - Static assets (including favicon and audio)
 - `/utils` - Utility functions
 - `/hooks` - Custom React hooks
 - `/contracts` - Smart contract code (if applicable)
