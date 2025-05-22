@@ -6,13 +6,13 @@ export interface SafeAreaInsets {
 }
 export const categories = {
   shuffle: "Shuffle",
-  random: "Random",
   countries: "Countries",
+  colours: "Colors",
   dapps: "DApps",
   blockchains: "Blockchains",
   sports: "Sports",
   social: "Social Platforms",
-  colours: "Colors",
+  random: "Random",
 } as const;
 
 export interface GameState {

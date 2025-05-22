@@ -23,6 +23,8 @@ export function useHangmanGame() {
     category: null,
   });
 
+  const [isTransactionPending, setIsTransactionPending] = useState(false);
+
   const { writeContract } = useWriteContract({
     mutation: {
       onSuccess: () => {
@@ -30,6 +32,8 @@ export function useHangmanGame() {
           ...prev,
           gameStatus: "playing",
         }));
+
+        setIsTransactionPending(false);
       },
     },
   });
@@ -150,5 +154,7 @@ export function useHangmanGame() {
     makeGuess,
     setGameState,
     completeGame,
+    isTransactionPending,
+    setIsTransactionPending,
   };
 }

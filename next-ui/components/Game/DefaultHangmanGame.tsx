@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { useHangmanGame } from "@/hooks/useHangmanGame";
 import HangmanGame from "./HangmanGame";
 import { categories } from "@/types";
@@ -9,17 +8,19 @@ type HangmanGameProps = {
 };
 
 export default function DefaultHangmanGame({ setMode }: HangmanGameProps) {
-  const { gameState, startNewGame, makeGuess, setGameState, completeGame } =
-    useHangmanGame();
-  const [isTransactionPending, setIsTransactionPending] = useState(false);
+  const {
+    gameState,
+    startNewGame,
+    makeGuess,
+    setGameState,
+    completeGame,
+    isTransactionPending,
+    setIsTransactionPending,
+  } = useHangmanGame();
 
   const onStart = async (category: keyof typeof categories) => {
     setIsTransactionPending(true);
-    try {
-      await startNewGame(category);
-    } finally {
-      setIsTransactionPending(false);
-    }
+    await startNewGame(category);
   };
 
   return (

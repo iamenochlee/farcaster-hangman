@@ -1,3 +1,4 @@
+import sdk from "@farcaster/frame-sdk";
 import React from "react";
 
 export default function Pregame({
@@ -6,21 +7,29 @@ export default function Pregame({
   setMode: (mode: "default") => void;
 }) {
   return (
-    <div className="flex flex-col items-center w-full max-w-md mx-auto py-8 gap-6 bg-[#200052] min-h-[calc(100vh-120px)]">
+    <div className="flex flex-col items-center w-full max-w-md mx-auto py-8 gap-6 bg-white min-h-[calc(100vh-120px)]">
       {/* Hangman SVG Illustration */}
       <div className="flex justify-center">
         <svg width="120" height="140" className="mb-4">
           <line
-            x1="30"
+            x1="100"
             y1="130"
-            x2="100"
+            x2="30"
             y2="130"
             stroke="#836EF9"
             strokeWidth="6"
           />
           <line
-            x1="65"
+            x1="30"
             y1="130"
+            x2="30"
+            y2="30"
+            stroke="#836EF9"
+            strokeWidth="6"
+          />
+          <line
+            x1="30"
+            y1="30"
             x2="65"
             y2="30"
             stroke="#836EF9"
@@ -29,21 +38,13 @@ export default function Pregame({
           <line
             x1="65"
             y1="30"
-            x2="100"
-            y2="30"
-            stroke="#836EF9"
-            strokeWidth="6"
-          />
-          <line
-            x1="100"
-            y1="30"
-            x2="100"
+            x2="65"
             y2="50"
             stroke="#836EF9"
             strokeWidth="6"
           />
           <circle
-            cx="100"
+            cx="65"
             cy="60"
             r="12"
             stroke="#A0055D"
@@ -51,41 +52,41 @@ export default function Pregame({
             fill="none"
           />
           <line
-            x1="100"
+            x1="65"
             y1="72"
-            x2="100"
+            x2="65"
             y2="100"
             stroke="#A0055D"
             strokeWidth="4"
           />
           <line
-            x1="100"
+            x1="65"
             y1="80"
-            x2="90"
+            x2="55"
             y2="90"
             stroke="#A0055D"
             strokeWidth="4"
           />
           <line
-            x1="100"
+            x1="65"
             y1="80"
-            x2="110"
+            x2="75"
             y2="90"
             stroke="#A0055D"
             strokeWidth="4"
           />
           <line
-            x1="100"
+            x1="65"
             y1="100"
-            x2="95"
+            x2="60"
             y2="120"
             stroke="#A0055D"
             strokeWidth="4"
           />
           <line
-            x1="100"
+            x1="65"
             y1="100"
-            x2="105"
+            x2="70"
             y2="120"
             stroke="#A0055D"
             strokeWidth="4"
@@ -93,28 +94,36 @@ export default function Pregame({
         </svg>
       </div>
       {/* Play Buttons */}
-      <div className="flex flex-col w-full bg-[#836EF9]">
+      <div className="flex flex-col w-full">
         <button
           onClick={() => setMode("default")}
-          className="w-full py-3 text-white font-semibold text-lg focus:outline-none rounded-none bg-transparent hover:bg-[#200052] transition-colors"
+          className="w-full py-3 text-white font-semibold text-lg focus:outline-none rounded-none bg-[#836EF9] hover:bg-[#200052] transition-colors border-2 border-[#836EF9]"
         >
-          Play (max 6 guess)
+          Play <span className="text-xs">(max 6 guess)</span>
         </button>
         <button
           disabled
-          className="w-full py-3 text-white font-semibold text-lg focus:outline-none rounded-none bg-transparent opacity-50 cursor-not-allowed border-t border-[#0E100F]"
+          className="w-full py-3 text-[#836EF9] font-semibold text-lg focus:outline-none rounded-none bg-[#E6E2F8] cursor-not-allowed border-1 border-[#836EF9]"
         >
-          Play (Timed 2 min) (coming soon)
+          Play Timed <span className="text-xs">(coming soon)</span>
         </button>
         <button
           disabled
-          className="w-full py-3 text-white font-semibold text-lg focus:outline-none rounded-none bg-transparent opacity-50 cursor-not-allowed border-t border-[#0E100F]"
+          className="w-full py-3 text-[#836EF9] font-semibold text-lg focus:outline-none rounded-none bg-[#E6E2F8] cursor-not-allowed border-2 border-[#836EF9]"
         >
-          Play with friends (coming soon)
+          Play with friends <span className="text-xs">(coming soon)</span>
         </button>
       </div>
       {/* Share Button */}
-      <button className="mt-6 flex items-center gap-2 px-6 py-2 bg-[#200052] text-white rounded-full font-medium shadow hover:bg-[#836EF9] transition-colors">
+      <button
+        onClick={() => {
+          sdk.actions.composeCast({
+            text: "Play Hangman on Monad! 🎉",
+            embeds: [window.location.href],
+          });
+        }}
+        className="mt-4 flex items-center gap-2 px-6 py-3 rounded-lg font-medium bg-[#836EF9] text-white shadow hover:bg-[#200052] transition-colors focus:outline-none focus:ring-2 focus:ring-[#836EF9]"
+      >
         <svg
           width="20"
           height="20"

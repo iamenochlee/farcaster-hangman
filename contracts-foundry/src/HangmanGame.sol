@@ -23,11 +23,12 @@ contract HangmanGame {
 
     mapping(string => Game) public games;
     mapping(address => Stats) public userStats;
-    uint256 public minStake = 0.01 ether;
+    uint256 public minStake = 0.05 ether;
     uint256 public maxGameDuration = 1 hours;
 
     event GameStarted(string gameId, address player, uint256 stake);
     event GameCompleted(string gameId, address player, bool won);
+    event FundsWithdrawn(address indexed recipient, uint256 amount);
 
     function startGame(
         string memory gameId,
@@ -73,38 +74,18 @@ contract HangmanGame {
         payable(game.player).transfer(game.stake);
 
         // Update stats
-        userStats[msg.sender].wordsGuessed += 1; // Only if won
+        userStats[game.player].wordsGuessed += 1; // Only if won
 
         emit GameCompleted(gameId, game.player, true);
     }
 
-    // function recoverExpiredGame(string memory gameId) external {
-    //     Game storage game = games[gameId];
-    //     require(!game.isCompleted, "Game already completed");
-    //     require(
-    //         block.timestamp > game.startTime + maxGameDuration,
-    //         "Game not expired"
-    //     );
-    //     require(msg.sender == game.player, "Not the player");
+    function withdrawFunds() external {
+        require(msg.sender == admin, "Only admin can withdraw funds");
+        uint256 balance = address(this).balance;
+        require(balance > 0, "No funds to withdraw");
 
-    //     game.isCompleted = true;
-    //     payable(game.player).transfer(game.stake);
-    //     emit GameCompleted(gameId, game.player, false);
-    // }
-
-    function withdrawExpiredGameFunds(string memory gameId) external {
-        require(msg.sender == admin, "Only admin can withdraw");
-
-        Game storage game = games[gameId];
-        require(!game.isCompleted, "Game already completed");
-        require(
-            block.timestamp > game.startTime + maxGameDuration,
-            "Game not expired"
-        );
-
-        game.isCompleted = true;
-        payable(admin).transfer(game.stake);
-        emit GameCompleted(gameId, game.player, false);
+        payable(admin).transfer(balance);
+        emit FundsWithdrawn(admin, balance);
     }
 
     // View functions

@@ -215,16 +215,29 @@
   },
   {
     "type": "function",
-    "name": "withdrawExpiredGameFunds",
-    "inputs": [
-      {
-        "name": "gameId",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
+    "name": "withdrawFunds",
+    "inputs": [],
     "outputs": [],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "FundsWithdrawn",
+    "inputs": [
+      {
+        "name": "recipient",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
   },
   {
     "type": "event",

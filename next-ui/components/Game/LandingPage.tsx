@@ -17,16 +17,24 @@ export default function LandingPage() {
         {/* Simple SVG Hangman Drawing */}
         <svg width="100" height="120" className="mb-4">
           <line
-            x1="20"
+            x1="80"
             y1="110"
-            x2="80"
+            x2="20"
             y2="110"
             stroke="#836EF9"
             strokeWidth="4"
           />
           <line
-            x1="50"
+            x1="20"
             y1="110"
+            x2="20"
+            y2="20"
+            stroke="#836EF9"
+            strokeWidth="4"
+          />
+          <line
+            x1="20"
+            y1="20"
             x2="50"
             y2="20"
             stroke="#836EF9"
@@ -35,21 +43,13 @@ export default function LandingPage() {
           <line
             x1="50"
             y1="20"
-            x2="80"
-            y2="20"
-            stroke="#836EF9"
-            strokeWidth="4"
-          />
-          <line
-            x1="80"
-            y1="20"
-            x2="80"
+            x2="50"
             y2="40"
             stroke="#836EF9"
             strokeWidth="4"
           />
           <circle
-            cx="80"
+            cx="50"
             cy="50"
             r="10"
             stroke="#A0055D"
@@ -57,41 +57,41 @@ export default function LandingPage() {
             fill="none"
           />
           <line
-            x1="80"
+            x1="50"
             y1="60"
-            x2="80"
+            x2="50"
             y2="85"
             stroke="#A0055D"
             strokeWidth="3"
           />
           <line
-            x1="80"
+            x1="50"
             y1="70"
-            x2="70"
+            x2="40"
             y2="80"
             stroke="#A0055D"
             strokeWidth="3"
           />
           <line
-            x1="80"
+            x1="50"
             y1="70"
-            x2="90"
+            x2="60"
             y2="80"
             stroke="#A0055D"
             strokeWidth="3"
           />
           <line
-            x1="80"
+            x1="50"
             y1="85"
-            x2="75"
+            x2="45"
             y2="100"
             stroke="#A0055D"
             strokeWidth="3"
           />
           <line
-            x1="80"
+            x1="50"
             y1="85"
-            x2="85"
+            x2="55"
             y2="100"
             stroke="#A0055D"
             strokeWidth="3"

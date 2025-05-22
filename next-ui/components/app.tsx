@@ -2,7 +2,6 @@
 
 import { SafeAreaContainer } from "@/utils/safe-area-container";
 import { useMiniAppContext } from "@/hooks/use-miniapp-context";
-import { User } from "./User";
 import { useAccount, useConnect } from "wagmi";
 import { useState } from "react";
 import { GameLayout, LandingPage, Pregame, DefaultHangmanGame } from "./Game";
@@ -17,7 +16,6 @@ export default function App() {
     <SafeAreaContainer insets={context?.client.safeAreaInsets}>
       {context?.user ? (
         <GameLayout>
-          <User />
           {isConnected ? (
             <>
               {mode === "none" ? (
