@@ -140,7 +140,7 @@ export default function HangmanGame({
         </button>
         {insufficientFunds && (
           <div className="text-red-500 text-sm font-semibold mt-1">
-            Insufficient funds (min 500 MON)
+            Insufficient funds (min 0.05 MON)
           </div>
         )}
       </div>
