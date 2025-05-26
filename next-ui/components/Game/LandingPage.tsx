@@ -93,7 +93,7 @@ export default function LandingPage() {
           />
         </svg>
         <button
-          onClick={openInFarcaster
+          onClick={openInFarcaster}
           className="w-full py-3 bg-[#836EF9] text-white rounded-lg font-semibold hover:bg-[#200052] transition-colors"
         >
           Open in Farcaster
