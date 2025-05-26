@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function LandingPage() {
-  const openInWarpcast = () => {
+  const openInFarcaster = () => {
     window.location.href = `https://warpcast.com/miniapps/MPqv6snxjuAx/hangman-game`;
   };
 
@@ -93,10 +93,10 @@ export default function LandingPage() {
           />
         </svg>
         <button
-          onClick={openInWarpcast}
+          onClick={openInFarcaster
           className="w-full py-3 bg-[#836EF9] text-white rounded-lg font-semibold hover:bg-[#200052] transition-colors"
         >
-          Open in Warpcast
+          Open in Farcaster
         </button>
         <div className="text-xs text-[#0E100F] mt-4">©2025 by enochlee</div>
       </div>
