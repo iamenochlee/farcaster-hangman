@@ -2,7 +2,7 @@ import React from "react";
 
 export default function LandingPage() {
   const openInFarcaster = () => {
-    window.location.href = `https://warpcast.com/miniapps/MPqv6snxjuAx/hangman-game`;
+    window.location.href = `https://farcaster.xyz/miniapps/MPqv6snxjuAx/hangman-game`;
   };
 
   return (
